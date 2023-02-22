@@ -41,7 +41,7 @@ Route::get("user-list",[UserController::class,'list']);
 //Route::get('/delete/{id}','restoController@delete');
 //Route::get('/edit/{id}','restoController@edit');
 
-
+Route::post('/deleteTeacher',[teacherController::class,'deleteTeacher'])->name('delete.teacher');
 //Route::get("customer-list",[\App\Http\Controllers\CustomerController::class,'list']);
 Route::get("customer-create",[CustomerController::class,'create']);
 Route::post("customer-store",[CustomerController::class,'store'])->name('customer.store');
@@ -53,6 +53,17 @@ Route::get("customer-edit/{id}",[CustomerController::class,'edit'])->name('custo
 Route::get("ajax",[teacherController::class,'index'])->name('teachers');
 Route::post("add-teacher",[teacherController::class,'addTeacher'])->name('add.teacher');
 Route::post("update-teacher",[teacherController::class,'updateTeacher'])->name('update.teacher');
-Route::post("delete-teacher",[teacherController::class,'deleteTeacher'])->name('delete.teacher');
+Route::post('/deleteTeacher',[teacherController::class,'deleteTeacher'])->name('delete.teacher');
+Route::post('/confirmDeleteTeacher',[teacherController::class,'confirmDeleteTeacher'])->name('confirmDelete.teacher');
+Route::get('/search-product',[teacherController::class,'searchTeacher'])->name('search.teacher');
+//Route::post('/paginationTeacher',[teacherController::class,'paginationTeacher'])->name('pagination.teacher');
+
+
+
+//Route::get('/', function (){
+//    return view('welcome');
+//});
+
+Route::get('/test',[\App\Http\Controllers\TestController::class,'index']);
 
 

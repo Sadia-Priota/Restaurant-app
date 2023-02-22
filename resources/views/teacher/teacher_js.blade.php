@@ -12,11 +12,13 @@
 </script>
 
 <script>
+
+    //add info
     $(document).ready(function () {
         //alert();
         $(document).on('click', '.add_teacher', function (e) {
             e.preventDefault();
-
+            let id = $('#id').val();
             let name = $('#name').val();
             let course = $('#course').val();
             let institute = $('#institute').val();
@@ -28,6 +30,7 @@
                 cache: false,
                 data: {
                     _token: "{{ csrf_token()}}",
+                    id: id,
                     name: name,
                     course: course,
                     institute: institute
@@ -43,16 +46,7 @@
                 }
             });
 
-
-            {{--$ajax({--}}
-            {{--    type:'post',--}}
-            {{--    url: "{!! route('') !!}",--}}
-            {{--    cache: false,--}}
-            {{--    data:{},--}}
-
-            {{--    success:function (res){--}}
-
-            {{--    // },error: function (err){--}}
+            {{--    // error: function (err){--}}
             {{--    //     let error = err.responseJSON;--}}
             {{--    //     $.each(error.errors, function (index,value){--}}
             {{--    //         $('.errMsgContainer').append('<span class="text-danger">'+value+'</span>'+'<br>')--}}
@@ -66,7 +60,6 @@
         // show edited form
 
         $(document).on('click', '.update_teacher', function () {
-            // return 'pp';
             let id = $(this).data('id');
             let name = $(this).data('name');
             let course = $(this).data('course');
@@ -81,7 +74,7 @@
 
         //update info
 
-        $(document).on('click', '.update_teacher', function (e) {
+        $(document).on('click', '.saveForm', function (e) {
             e.preventDefault();
 
             let up_id = $('#up_id').val();
@@ -89,9 +82,11 @@
             let up_course = $('#up_course').val();
             let up_institute = $('#up_institute').val();
 
+         //   console.log(up_institute)
+
             $.ajax({
                 type: 'POST',
-                url: `{{ route('update.teacher') }}`,
+                url: "{{ route('update.teacher') }}",
                 cache: false,
                 data: {
                     _token: "{{ csrf_token()}}",
@@ -111,31 +106,83 @@
             });
 
         });
-    });
 
+        //delete info
+        $(document).on('click', '.delete_teacher', function (e) {
+            e.preventDefault();
 
-    //delete info
+            let id = $(this).data('id');
 
-    $(document).on('click', '.delete_teacher', function (e) {
-        e.preventDefault();
-
-        let up_id = $(this).data('id');
-
-        $.ajax({
-            type: 'POST',
-            url: `{{ route('delete.teacher') }}`,
-            cache: false,
-            data: {
-                _token: "{{ csrf_token()}}",
-                up_id: up_id
-            },
-            success: function (res) {
-                if (res.status === 'success') {
-                    $('.table').load(location.href + ' .table');
+            $.ajax({
+                type: 'POST',
+                url: `{{ route('delete.teacher') }}`,
+                cache: false,
+                data: {
+                    _token: "{{ csrf_token()}}",
+                    id: id
+                },
+                success: function (res) {
+                    if (res.status === 'success') {
+                        $('#deleteEmployee').modal('show');
+                        // $('#delete_info')[0].reset();
+                        //  $('.table').load(location.href + ' .table');
+                        //   Command: toastr["success"]("Record Deleted", "Success")
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                    }
                 }
-            }
+
+
+            });
+
         });
 
+
+        //search
+        $(document).on('keyup',function (e){
+           e.preventDefault();
+           let search_string = $('#search').val();
+           // console.log(search_string);
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('search.teacher') }}",
+                cache: false,
+                data: {
+                    _token: "{{ csrf_token()}}",
+                    search_string: search_string
+                },
+                success: function (res) {
+                    console.log(res)
+                    console.log(res.teachers)
+                        $('.teacherDiv').html(res);
+
+                        if(res.status == 'nothing_found'){
+                            $('.table').html('<span class = "text-danger">'+'Nothing Found!!'+'</span>');
+                        }
+
+                }
+            });
+
+            })
+
     });
+
+
+
 
 </script>

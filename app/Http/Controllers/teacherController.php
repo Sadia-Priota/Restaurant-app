@@ -12,18 +12,33 @@ class teacherController extends Controller
     public function index()
 
     {
-        $data= teacherTable::all();
+//        $search_string = $request->search_string;
+//        $data = teacherTable::query()
+//            ->when($search_string, function ($query) use($search_string){
+//                $query->where('name','like',"%{$search_string}%")
+//                    ->orWhere('course','like',"%{$search_string}%");
+//            })
+//            ->orderBy('id','desc')
+//            ->paginate(5);
+//
+//
+//
+//
+//        return view('teacher.index',compact('data'));
+
+
+
+
+       // $teachers= teacherTable::all();
 //        dd($data);
-      //  $data= teacherTable::latest()->paginate(5);
-        return view('teacher.index',compact('data'));
+        $teachers= teacherTable::query()->paginate(5);
+        return view('teacher.index',compact('teachers'));
 
     }
 
     //store info
         public function addTeacher(Request $req)
         {
-
-
 //            $validation_date = validator(request()->all(),[
 //                'name'  => ['required'],
 //                'course'  => ['required','string'],
@@ -63,9 +78,11 @@ class teacherController extends Controller
 
     public function updateTeacher(Request $req)
     {
+
+//        return $req;
         $req->validate(
             [
-                'up_name'  => 'required|unique:teacher_tables,'.$req->up_id,
+                'up_name'  => 'required|unique:teacher_tables,id,' . $req->up_id,
                 'up_course'  => 'required','string',
                 'up_institute'  => 'required',
             ],
@@ -85,5 +102,41 @@ class teacherController extends Controller
         ]);
     }
 
+    public function deleteTeacher(Request $req){
+        return response()-> json([
+            'status' => 'success',
+        ]);
+    }
 
+    public function confirmDeleteTeacher(Request $req){
+
+        $info = teacherTable::find($req->id);
+        $info -> delete();
+
+//        teacherTable::find($req->id)->delete();
+
+        return response()-> json([
+            'status' => 'success',
+        ]);
+    }
+
+    public function searchTeacher(Request $req){
+
+        $search_string=$req->search_string;
+
+        $teachers = teacherTable::query()
+            ->where('name','like',"%{$search_string}%")
+            ->orWhere('course','like',"%{$search_string}%")
+            ->orderBy('id','desc')
+            ->paginate(5);
+
+        if($teachers->count() >= 1){
+            return view('teacher.teacher-ajax', compact('teachers'))->render();
+        }
+        else{
+            return response() -> json([
+                'status' => 'nothing_found',
+            ]);
+        }
+    }
 }

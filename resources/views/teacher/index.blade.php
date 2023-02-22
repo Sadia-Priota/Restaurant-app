@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -238,31 +239,6 @@
             font-weight: normal;
         }
     </style>
-    <script>
-        $(document).ready(function(){
-            // Activate tooltip
-            // $('[data-toggle="tooltip"]').tooltip();
-
-            // Select/Deselect checkboxes
-            // var checkbox = $('table tbody input[type="checkbox"]');
-            // $("#selectAll").click(function(){
-            //     if(this.checked){
-            //         checkbox.each(function(){
-            //             this.checked = true;
-            //         });
-            //     } else{
-            //         checkbox.each(function(){
-            //             this.checked = false;
-            //         });
-            //     }
-            // });
-            // checkbox.click(function(){
-            //     if(!this.checked){
-            //         $("#selectAll").prop("checked", false);
-            //     }
-            // });
-        });
-    </script>
 </head>
 <body>
 <div class="container-xl">
@@ -277,72 +253,75 @@
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal">
                             <i class="material-icons">&#xE147;</i>
                             <span>Add New Teacher</span></a>
-{{--                        <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal">--}}
+{{--                        <a href="#searchEmployeeModal" class="btn btn-danger" data-toggle="modal">--}}
 {{--                            <i class="material-icons">&#xE15C;</i>--}}
 {{--                            <span>Delete</span></a>--}}
-                    </div>
+                        </div>
+                    <div class="col-sm-6">
+                        <input type="text" name="search" id="search" class="mb-3 form-control" placeholder="Search here..." style="margin-top: 30px"></div>
+
                 </div>
             </div>
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-{{--                    <th>--}}
-{{--							<span class="custom-checkbox">--}}
-{{--								<input type="checkbox" id="selectAll">--}}
-{{--								<label for="selectAll"></label>--}}
-{{--							</span>--}}
-{{--                    </th>--}}
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Course</th>
-                    <th>Institute</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
+           <div class="teacherDiv">
+               <table class="table table-striped table-hover">
+                   <thead>
+                   <tr>
+                       <th>ID</th>
+                       <th>Name</th>
+                       <th>Course</th>
+                       <th>Institute</th>
+                       <th>Actions</th>
+                   </tr>
+                   </thead>
+                   <tbody>
 
-                @foreach($data as $item)
+                   @foreach($teachers as $item)
 
-                    <tr>
-                        <th scope="row">{{$item->id}}</th>
-                        <td>{{$item->name}}</td>
-                        <td>{{$item->course}}</td>
-                        <td>{{$item->institute}}</td>
+                       <tr>
+                           <th scope="row">{{$item->id}}</th>
+                           <td>{{$item->name}}</td>
+                           <td>{{$item->course}}</td>
+                           <td>{{$item->institute}}</td>
 
-                        <td>
-                            <a href="#deleteEmployee" class="delete delete_teacher" data-toggle="modal"
-                            data-id="{{ $item->id }}"
-                            >
-                                <i class="material-icons" title="Delete">&#xE872;</i></a>
+                           <td>
+                               <a href="#deleteEmployee" class="delete delete_teacher" data-toggle="modal"
+                                  data-id="{{ $item->id }}">
+                                   <i class="material-icons" title="Delete">&#xE872;</i></a>
 
 
-                            <a href="#editEmployeeModal" class="edit update_teacher" data-toggle="modal"
-                               data-id="{{ $item->id }}"
-                               data-name="{{ $item->name }}"
-                               data-course="{{ $item->course }}"
-                               data-institute="{{ $item->institute }}">
-                                <i class="material-icons" title="Edit">&#xE254;</i></a>
-                        </td>
-                    </tr>
-                @endforeach
+                               <a href="#editEmployeeModal" class="edit update_teacher" data-toggle="modal"
+                                  data-id="{{ $item->id }}"
+                                  data-name="{{ $item->name }}"
+                                  data-course="{{ $item->course }}"
+                                  data-institute="{{ $item->institute }}">
+                                   <i class="material-icons" title="Edit">&#xE254;</i></a>
+                           </td>
+                       </tr>
+                   @endforeach
 
-                </tbody>
-            </table>
+                   {{--                <tr class="pagination">--}}
+                   {{--                    <td colspan="6">{{ $item->links() }}</td>--}}
+                   {{--                </tr>--}}
 
-{{--            {!! $item->links() !!}--}}
+                   </tbody>
+               </table>
 
-            <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
-            </div>
+               {{--                        {!! $item->links() !!}--}}
+
+               <div class="clearfix">
+                   <div class="hint-text">Showing <b>5</b> out of <b>"{{ $item->id }}"</b> entries</div>
+                   <ul class="pagination">
+                       <li colspan = "6" align = "center">{{ $teachers->links() }}</li>
+                       {{--                    <li class="page-item disabled"><a href="#">Previous</a></li>--}}
+                       {{--                    <li class="page-item"><a href="#" class="page-link">1</a></li>--}}
+                       {{--                    <li class="page-item"><a href="#" class="page-link">2</a></li>--}}
+                       {{--                    <li class="page-item"><a href="#" class="page-link">3</a></li>--}}
+                       {{--                    <li class="page-item"><a href="#" class="page-link">4</a></li>--}}
+                       {{--                    <li class="page-item"><a href="#" class="page-link">5</a></li>--}}
+                       {{--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>--}}
+                   </ul>
+               </div>
+           </div>
         </div>
     </div>
 </div>
@@ -410,7 +389,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-info addModalForm" value="Save">
+                    <input type="button" class="btn btn-info saveForm" value="Save">
                 </div>
             </form>
         </div>
@@ -422,23 +401,78 @@
 <div id="deleteEmployee" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="" method="post" id="delete_info">
+{{--            <form action="" method="post" id="delete_info">--}}
+{{--                @csrf--}}
+                <input type="hidden" id="id">
                 <div class="modal-header">
                     <h4 class="modal-title">Delete Teacher</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete these Records?</p>
+                    <p>Are you sure you want to delete this Record?</p>
                     <p class="text-warning"><small>This action cannot be undone.</small></p>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <button type="submit" class="btn btn-danger" onclick="confirmDeleteTeacher({{$item->id}})"> Delete</button>
+{{--                    <input type="button" class="btn btn-danger delete_info" value="Delete">--}}
                 </div>
-            </form>
+{{--            </form>--}}
         </div>
     </div>
 </div>
+</div>
 </body>
+<script>
+{{--    function deleteTeacher(){--}}
+{{--        $('#deleteEmployee').modal('show');--}}
+{{--    }--}}
+    function  confirmDeleteTeacher(teacherId){
+        console.log(teacherId);
+        $.ajax({
+            type: 'POST',
+            url: `{{ route('confirmDelete.teacher') }}`,
+            cache: false,
+            data: {
+                _token: "{{ csrf_token()}}",
+                id: teacherId
+            },
+            success: function (res) {
+                if (res.status === 'success') {
+                    $('#deleteEmployee').modal('hide');
+                    // $('#delete_info')[0].reset();
+                    $('.table').load(location.href + ' .table');
+                    }
+                }
+        });
+    }
 
-@include('teacher.teacher_js');
+{{--        --}}{{--});--}}
+{{--    }--}}
+{{--    // $(document).ready(function(){--}}
+{{--    //     // Activate tooltip--}}
+{{--    //     // $('[data-toggle="tooltip"]').tooltip();--}}
+{{--    //--}}
+{{--    //     // Select/Deselect checkboxes--}}
+{{--    //     // var checkbox = $('table tbody input[type="checkbox"]');--}}
+{{--    //     // $("#selectAll").click(function(){--}}
+{{--    //     //     if(this.checked){--}}
+{{--    //     //         checkbox.each(function(){--}}
+{{--    //     //             this.checked = true;--}}
+{{--    //     //         });--}}
+{{--    //     //     } else{--}}
+{{--    //     //         checkbox.each(function(){--}}
+{{--    //     //             this.checked = false;--}}
+{{--    //     //         });--}}
+{{--    //     //     }--}}
+{{--    //     // });--}}
+{{--    //     // checkbox.click(function(){--}}
+{{--    //     //     if(!this.checked){--}}
+{{--    //     //         $("#selectAll").prop("checked", false);--}}
+{{--    //     //     }--}}
+{{--    //     // });--}}
+{{--    // });--}}
+</script>
+@include('teacher.teacher_js')
+{!! Toastr::message() !!}
 </html>
