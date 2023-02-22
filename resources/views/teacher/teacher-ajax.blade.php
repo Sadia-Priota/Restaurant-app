@@ -37,10 +37,11 @@
         </tbody>
     </table>
 
-    <div class="clearfix">
-        <div class="hint-text">Showing <b>5</b> out of <b>"{{ $item->id }}"</b> entries</div>
-        <ul class="pagination">
-            <li colspan = "6" align = "center">{{ $teachers->links() }}</li>
-        </ul>
+    <div style="margin-top: 10px; float: right;" >
+        <li colspan = "6" align = "center">{{ $teachers->links() }}</li>
     </div>
+
+    <p style="margin-top: 10px;">
+        Displaying {{ $teachers->count() }} of {{ $teachers->total() }} item(s).
+    </p>
 </div>

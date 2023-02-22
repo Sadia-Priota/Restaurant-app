@@ -123,33 +123,30 @@
                 },
                 success: function (res) {
                     if (res.status === 'success') {
-                        $('#deleteEmployee').modal('show');
+                        $('#deleteEmployee').modal('hide');
                         // $('#delete_info')[0].reset();
                         //  $('.table').load(location.href + ' .table');
                         //   Command: toastr["success"]("Record Deleted", "Success")
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
+                        // toastr.options = {
+                        //     "closeButton": false,
+                        //     "debug": false,
+                        //     "newestOnTop": false,
+                        //     "progressBar": false,
+                        //     "positionClass": "toast-top-right",
+                        //     "preventDuplicates": false,
+                        //     "onclick": null,
+                        //     "showDuration": "300",
+                        //     "hideDuration": "1000",
+                        //     "timeOut": "5000",
+                        //     "extendedTimeOut": "1000",
+                        //     "showEasing": "swing",
+                        //     "hideEasing": "linear",
+                        //     "showMethod": "fadeIn",
+                        //     "hideMethod": "fadeOut"
+                        // }
                     }
                 }
-
-
             });
-
         });
 
 
@@ -172,17 +169,14 @@
                         $('.teacherDiv').html(res);
 
                         if(res.status == 'nothing_found'){
-                            $('.table').html('<span class = "text-danger">'+'Nothing Found!!'+'</span>');
+                            $('.teacherDiv').html('<span class = "text-danger">'+'Nothing Found!!'+'</span>');
+                            //return search_string;
+                           // $('#error').modal('show');
+                           // return view('teacher.errorMsg');
                         }
-
-                }
-            });
-
+                    }
+                });
             })
-
-    });
-
-
-
+        });
 
 </script>

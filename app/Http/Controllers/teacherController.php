@@ -103,6 +103,10 @@ class teacherController extends Controller
     }
 
     public function deleteTeacher(Request $req){
+
+        $info = teacherTable::find($req->id);
+        $info -> delete();
+
         return response()-> json([
             'status' => 'success',
         ]);
@@ -110,8 +114,7 @@ class teacherController extends Controller
 
     public function confirmDeleteTeacher(Request $req){
 
-        $info = teacherTable::find($req->id);
-        $info -> delete();
+
 
 //        teacherTable::find($req->id)->delete();
 
