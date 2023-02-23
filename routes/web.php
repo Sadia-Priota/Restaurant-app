@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\restoController;
 use App\Http\Controllers\teacherController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,10 +62,14 @@ Route::get('/search-product',[teacherController::class,'searchTeacher'])->name('
 
 
 
-//Route::get('/', function (){
-//    return view('welcome');
-//});
+Route::get('/', function (){
+    return view('home');
+});
 
 Route::get('/test',[\App\Http\Controllers\TestController::class,'index']);
 
+Route::get('/queue',[HomeController::class,'index']);
+Route::get("upload",[\App\Http\Controllers\UploadController::class,'index']);
+Route::get("progress",[\App\Http\Controllers\UploadController::class,'progress']);
+Route::post('/upload/file',[UploadController::class,'uploadFileAndStore'])->name('processFile');
 

@@ -35,6 +35,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/user-create">Register</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ajax">Teacher Add</a>
+            </li>
         </ul>
     </div>
 </nav>
